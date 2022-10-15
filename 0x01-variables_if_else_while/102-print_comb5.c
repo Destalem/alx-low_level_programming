@@ -15,7 +15,7 @@ int main(void)
 			putchar(' ');
 			putchar((num2 / 10) + '0');
 			putchar((num2 % 10) + '0');
-			if ((num1 == 0) && (num2 == 99))
+			if ((num1 == 00) && (num2 == 99))
 				continue;
 			putchar(',');
 			putchar(' ');
