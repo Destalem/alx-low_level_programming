@@ -1,43 +1,104 @@
 #include "main.h"
-#include <stdlib.h>
 
 /**
- * alloc_grid - returns a pointer to a 2 dimensional array of integers.
- * @width: width of the array.
- * @height: height of the array.
- *
- * Return: pointer of an array of integers
+ * strtow - splits a string into words
+ * @str: string of words to be split
+ * Return: double pointer to strings
  */
-int **alloc_grid(int width, int height)
+char **strtow(char *str)
 {
-	int **gridout;
-	int i, j;
+	char **ptr;
+	int i, k, len, start, end, j = 0;
+	int words =  countWords(str);
 
-	if (width < 1 || height < 1)
+	if (!str || !countWords(str))
 		return (NULL);
-
-	gridout = malloc(height * sizeof(int *));
-	if (gridout == NULL)
-	{
-		free(gridout);
+	ptr = malloc(sizeof(char *) * (words + 1));
+	if (!ptr)
 		return (NULL);
-	}
-
-	for (i = 0; i < height; i++)
+	for (i = 0; i < words; i++)
 	{
-		gridout[i] = malloc(width * sizeof(int));
-		if (gridout[i] == NULL)
+		start = startIndex(str, j);
+		end = endIndex(str, start);
+		len = end - start;
+		ptr[i] = malloc(sizeof(char) * (len + 1));
+		if (!ptr[i])
 		{
-			for (i--; i >= 0; i--)
-				free(gridout[i]);
-			free(gridout);
+			i -= 1;
+			while (i >= 0)
+			{
+				free(ptr[i]);
+					i--;
+			}
+			free(ptr);
 			return (NULL);
 		}
+		for (k = 0; k < len; k++)
+			ptr[i][k] = str[start++];
+		ptr[i][k++] = '\0';
+		j = end + 1;
 	}
+	ptr[i] = NULL;
+	return (ptr);
+}
 
-	for (i = 0; i < height; i++)
-		for (j = 0; j < width; j++)
-			gridout[i][j] = 0;
+/**
+ * isSpace - determines if character is a space or not
+ * @c: input char
+ * Return: 1 if true or 0 or not
+ */
+int isSpace(char c)
+{
+	return (c == ' ');
+}
 
-	return (gridout);
+/**
+ * startIndex - returns first index of non-space char
+ * @s: input string
+ * @index: starting index
+ * Return: index of first non-space char
+ */
+int startIndex(char *s, int index)
+{
+
+	while (isSpace(*(s + index)))
+		index++;
+	return (index);
+}
+
+/**
+ * endIndex - returns last index of non-space char
+ * @s: input string
+ * @index: starting index
+ * Return: index of last index of non-space char
+ */
+int endIndex(char *s, int index)
+[6 ~{
+	while (!isSpace(*(s + index)))
+		index++;
+	return (index);
+}
+
+/**
+ * countWords - counts numbers of words in string
+ * @s: input string
+ * Return: number of words
+ */
+int countWords(char *s)
+{
+	int wordOn = 0;
+	int words = 0;
+
+	while (*s)
+	{
+		if (isSpace(*s) && wordOn)
+			wordOn = 0;
+		else if (!isSpace(*s) && !wordOn)
+		{
+			wordOn = 1;
+			words++;
+		}
+		s++;
+	}
+	return (words);
 }
