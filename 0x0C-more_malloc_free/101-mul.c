@@ -2,26 +2,26 @@
 #include <stdlib.h>
 
 /**
- * array_range - A function that creates an array of integers
- * @min: min number to start
- * @max: max number to start
- * Return: pointer
+ * main - Check the code
+ * @argc: number of arguments
+ * @argv: arguments
+ * Return: Nothing
  */
-int *array_range(int min, int max)
+int main(int argc, char **argv)
 {
-	int *new_array;
-	int diff, i;
+	int num1, num2, result;
 
-	if (min > max)
-		return (NULL);
-
-	diff = max - min;
-	new_array = malloc((diff + 1) * sizeof(int));
-	if (new_array == NULL)
-		return (NULL);
-
-	for (i = 0; i <= diff; i++)
-		new_array[i] = min++;
-
-	return (new_array);
+	if (argc != 3)
+	{
+		printf("Error\n");
+		exit(98);
+	}
+	else
+	{
+		num1 = atoi(argv[1]);
+		num2 = atoi(argv[2]);
+		result = num1 * num2;
+		printf("%d\n", result);
+		return (0);
+	}
 }
